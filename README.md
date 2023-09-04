@@ -44,8 +44,16 @@ description: Anchorage ARTCC
 discord_id: 123456789012345678
 # What name format do we set for users in the guild?
 # - first_last (John Doe, John Doe | ATM)
+#   *NOTE* If this is set and staff_format is all, or the name is long, that user's last name will be truncated to last initial
+#   to fit within Discord's 32 character limit
 # - first_last_initial (John D., John D. | ATM)
 name_format: first_last
+# At the end of the name we'll append the staff role(s)
+# - highest: The highest staff role from ATM, DATM, TA, EC, FE, WM, INS, MTR, AEC, AFE, AWM
+# - all: All staff roles from ATM, DATM, TA, EC, FE, WM, INS, MTR, AEC, AFE, AWM separated by the defined seperator
+staff_format: highest
+# Seperator to use between the staff role(s) when staff_format is all
+# staff_title_seperator: "/"
 # Position table, used for the who's online embedded message
 # that will be posted to the positions_channel
 positions:

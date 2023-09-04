@@ -1,5 +1,5 @@
 /*
- * Copyright Daniel Hawton
+ * Copyright ADH Partnership
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,29 +14,10 @@
  *  limitations under the License.
  */
 
-package config
+package dto
 
-import (
-	"os"
-
-	"sigs.k8s.io/yaml"
-)
-
-var Cfg *Config
-
-func ParseConfig(file string) (*Config, error) {
-	config, err := os.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-
-	cfg := &Config{}
-	err = yaml.Unmarshal(config, cfg)
-	if err != nil {
-		return nil, err
-	}
-
-	Cfg = cfg
-
-	return cfg, nil
+type StorageRequest struct {
+	Category    string `json:"category"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
