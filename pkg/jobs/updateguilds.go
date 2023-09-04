@@ -16,18 +16,16 @@
 
 package jobs
 
+import "github.com/vpaza/bot/internal/facility"
+
 func UpdateGuilds() {
-	/*
-		 @TODO
-			log.Debugf("Starting UpdateGuilds job")
-			defer log.Debugf("Finished UpdateGuilds job")
-			for _, f := range facility.FacCfg {
-				updateGuild(f)
-			}
-	*/
+	log.Debugf("Starting UpdateGuilds job")
+	defer log.Debugf("Finished UpdateGuilds job")
+	for _, f := range facility.FacCfg {
+		updateGuild(f)
+	}
 }
 
-/* @TODO
 func updateGuild(f *facility.Facility) {
 	log.Debugf("Requesting Guild Members for %s", f.Facility)
 	err := discord.RequestGuildMembers(f.DiscordID, "", 0, "", false)
@@ -36,4 +34,3 @@ func updateGuild(f *facility.Facility) {
 		return
 	}
 }
-*/

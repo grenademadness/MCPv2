@@ -20,9 +20,12 @@ import (
 	"fmt"
 
 	"github.com/adh-partnership/api/pkg/database/dto"
+	"github.com/adh-partnership/api/pkg/logger"
 
 	"github.com/vpaza/bot/internal/formatter/staff"
 )
+
+var log = logger.Logger.WithField("component", "formatter/names/firstlast")
 
 func GenerateNameFromUser(u *dto.UserResponse, staffformat, staffsep string) string {
 	title := staff.GetTitle(u, staffformat, staffsep)
@@ -34,10 +37,13 @@ func GenerateNameFromUser(u *dto.UserResponse, staffformat, staffsep string) str
 		// Check length of FirstName + LastName Initial + Title
 		if len(fmt.Sprintf("%s %s.%s", u.FirstName, u.LastName[:1], title)) > 32 {
 			diff := len(fmt.Sprintf("%s %s.%s", u.FirstName, u.LastName[:1], title)) - 32 - 3
+			log.Debugf("Name=%s", fmt.Sprintf("%s %s.%s", u.FirstName[:len(u.FirstName)-diff], u.LastName[:1], title))
 			return fmt.Sprintf("%s %s.%s", u.FirstName[:len(u.FirstName)-diff], u.LastName[:1], title)
 		}
+		log.Debugf("Name=%s", fmt.Sprintf("%s %s.%s", u.FirstName, u.LastName[:1], title))
 		return fmt.Sprintf("%s %s.%s", u.FirstName, u.LastName[:1], title)
 	}
 
+	log.Debugf("Name=%s", fmt.Sprintf("%s %s%s", u.FirstName, u.LastName, title))
 	return fmt.Sprintf("%s %s%s", u.FirstName, u.LastName, title)
 }

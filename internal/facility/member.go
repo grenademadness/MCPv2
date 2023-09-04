@@ -18,6 +18,7 @@ package facility
 
 import (
 	"slices"
+	"strings"
 
 	"github.com/adh-partnership/api/pkg/database/dto"
 	"github.com/bwmarrin/discordgo"
@@ -35,11 +36,10 @@ func (f *Facility) GenerateNameFromUser(u *dto.UserResponse) string {
 	case "first_last_initial":
 		return firstlastinitial.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
 	case "first_last":
+		return firstlast.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
 	default:
 		return firstlast.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
 	}
-
-	return ""
 }
 
 func (f *Facility) ProcessMember(s *discordgo.Session, m *discordgo.Member) {
@@ -49,11 +49,17 @@ func (f *Facility) ProcessMember(s *discordgo.Session, m *discordgo.Member) {
 		return
 	}
 
-	if user != nil {
+	// If user is nil or this is the owner, skip setting names
+	// for nil we don't have any info to set the name to, and for owners
+	// we lack permissions
+	if user != nil && f.GetOwnerID(s) != m.User.ID {
 		name := f.GenerateNameFromUser(user)
-		err := s.GuildMemberNickname(m.GuildID, m.User.ID, name)
-		if err != nil {
-			log.Errorf("Failed to set nickname for %s: %s", m.User.Username, err)
+		log.Debugf("Nick=%s, Name=%s", m.Nick, name)
+		if m.Nick == "" || name != m.Nick {
+			err := s.GuildMemberNickname(m.GuildID, m.User.ID, name)
+			if err != nil {
+				log.Errorf("Failed to set nickname for %s: %s", m.User.Username, err)
+			}
 		}
 	}
 	f.ProcessMemberRoles(s, m)
@@ -101,23 +107,28 @@ func (f *Facility) ProcessMemberRoles(s *discordgo.Session, m *discordgo.Member)
 }
 
 func (f *Facility) checkCondition(user *dto.UserResponse, condition, value *string) bool {
+	log.Tracef("user=%+v, condition=%+v, value=%+v", user, *condition, *value)
 	switch *condition {
 	case "controller_type":
 		if user == nil {
 			return false
 		}
+		log.Tracef("controller_type(%s)=%t", *value, user.ControllerType == *value)
 		return user.ControllerType == *value
 	case "has_role":
 		if user == nil {
 			return false
 		}
-		return utils.Contains[string](user.Roles, *value)
+		log.Tracef("has_role(%s)=%t", *value, utils.Contains[string](user.Roles, *value))
+		return utils.Contains[string](user.Roles, *value) || utils.Contains[string](user.Roles, strings.ToLower(*value))
 	case "rating":
 		if user == nil {
 			return false
 		}
+		log.Tracef("rating(%s)=%t", *value, user.Rating == *value)
 		return user.Rating == *value
 	case "unknown":
+		log.Tracef("unknown(%s)=%t", *value, user == nil)
 		switch *value {
 		case "true":
 			return user == nil

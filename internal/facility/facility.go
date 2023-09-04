@@ -58,7 +58,6 @@ func init() {
 
 func FindFacility(f *Facility) (*Facility, error) {
 	for _, cfg := range FacCfg {
-		log.Infof("Checking %+v against %s", cfg, f.DiscordID)
 		if cfg.DiscordID == f.DiscordID {
 			return cfg, nil
 		}

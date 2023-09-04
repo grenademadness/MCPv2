@@ -31,6 +31,7 @@ import (
 	"github.com/vpaza/bot/internal/bot"
 	"github.com/vpaza/bot/internal/commands"
 	"github.com/vpaza/bot/internal/facility"
+	"github.com/vpaza/bot/pkg/cache"
 	"github.com/vpaza/bot/pkg/config"
 	"github.com/vpaza/bot/pkg/database/models"
 	"github.com/vpaza/bot/pkg/jobs"
@@ -110,6 +111,12 @@ func newStartCommand() *cli.Command {
 			err = database.DB.AutoMigrate(
 				&models.Bot{},
 			)
+			if err != nil {
+				return err
+			}
+
+			log.Infof("Configuring cache")
+			err = cache.Setup()
 			if err != nil {
 				return err
 			}

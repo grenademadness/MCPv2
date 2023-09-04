@@ -33,7 +33,8 @@ func (f *Facility) GetRoster() []*dto.UserResponse {
 		fmt.Sprintf("/%s/roster", f.Facility),
 	)
 	if err != nil {
-		status, content, err := network.Call(
+		var status int
+		status, content, err = network.Call(
 			"GET",
 			fmt.Sprintf("%s/v1/user/all", f.API),
 			"application/json",

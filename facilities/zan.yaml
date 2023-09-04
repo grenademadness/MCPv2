@@ -1,8 +1,9 @@
 facility: ZAN
-bot_name: Go Bot
+bot_name: ZAN Is The Best
 description: Anchorage ARTCC
-discord_id: "724770115161292851"
+discord_id: "1148188958539403354"
 name_format: first_last
+api: https://api.zanartcc.org
 positions:
   - name: Oceanic
     callsigns:
@@ -50,7 +51,7 @@ positions:
         - GND
         - DEL
 roles:
-  - id: 1013148343771340800
+  - id: 1148188958568759335
     name: ZAN Senior Staff
     if:
       - condition: has_role
@@ -59,7 +60,7 @@ roles:
         value: DATM
       - condition: has_role
         value: TA
-  - id: 1013148343771340800
+  - id: 1148188958568759334
     name: ZAN Staff
     if:
       - condition: has_role
@@ -68,7 +69,7 @@ roles:
         value: FE
       - condition: has_role
         value: WM
-  - id: 1013148343771340800
+  - id: 1148188958568759333
     name: ZAN Assistance Staff
     if:
       - condition: has_role
@@ -77,49 +78,49 @@ roles:
         value: events
       - condition: has_role
         value: web
-  - id: 1113130280757235800
+  - id: 1148188958568759332
     name: Training Team
     if:
       - condition: has_role
         value: INS
       - condition: has_role
         value: MTR
-  - id: 1135762890608091100
+  - id: 1148188958539403361
     name: FE Team
     if:
       - condition: has_role
         value: facilities
-  - id: 1013148343729393800
+  - id: 1148188958539403360
     name: Events Team
     if:
       - condition: has_role
         value: events
-  - id: 1013148343750361100
+  - id: 1148188958568759330
     name: Instructors
     if:
       - condition: has_role
         value: INS
-  - id: 1013148343750361100
+  - id: 1148188958568759329
     name: Mentors
     if:
       - condition: has_role
         value: MTR
-  - id: 1013148343750361100
+  - id: 1148188958568759326
     name: ZAN Members
     if:
       - condition: controller_type
         value: home
-  - id: 1013148343750361100
+  - id: 1148188958539403363
     name: Visitors
     if:
       - condition: controller_type
         value: visit
-  - id: 1013148343729393800
+  - id: 1148188958539403357
     name: Pilot
     if:
       - condition: controller_type
         value: none
-  - id: 1121131087146524900
+  - id: 1148188958539403355
     name: Unverified
     if:
       - condition: unknown

@@ -14,31 +14,29 @@
  *  limitations under the License.
  */
 
-package jobs
+package facility
 
 import (
-	"time"
+	"fmt"
 
-	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
-	"github.com/go-co-op/gocron"
+
+	"github.com/vpaza/bot/pkg/cache"
 )
 
-var (
-	s       *gocron.Scheduler
-	discord *discordgo.Session
-	log     = logger.Logger.WithField("component", "jobs")
-)
-
-func BuildJobs() {
-	s = gocron.NewScheduler(time.UTC)
-	_, err := s.Every(5).Minutes().SingletonMode().Do(UpdateGuilds)
-	if err != nil {
-		log.Errorf("Failed to schedule UpdateGuilds: %s", err)
+func (f *Facility) GetOwnerID(s *discordgo.Session) string {
+	b, err := cache.Get(
+		fmt.Sprintf("/%s/owner", f.Facility),
+	)
+	if err == nil {
+		return string(b)
 	}
-}
 
-func Start(sess *discordgo.Session) {
-	s.StartAsync()
-	discord = sess
+	g, err := s.Guild(f.DiscordID)
+	if err != nil {
+		log.Errorf("Failed to get guild %s: %s", f.DiscordID, err)
+		return ""
+	}
+
+	return g.OwnerID
 }

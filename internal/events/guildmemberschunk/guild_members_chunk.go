@@ -33,9 +33,12 @@ func Handler(s *discordgo.Session, m *discordgo.GuildMembersChunk) {
 			return
 		}
 
-		log.Infof("(Chunk %s/%d/%d) Processing %d members", fac.Facility, m.ChunkIndex, m.ChunkCount, len(m.Members))
-		defer log.Debugf("(Chunk %s/%d/%d) Completed processing chunk", fac.Facility, m.ChunkIndex, m.ChunkCount)
+		log.Infof("(Chunk %s/%d/%d) Processing %d members", fac.Facility, m.ChunkIndex+1, m.ChunkCount, len(m.Members))
+		defer log.Debugf("(Chunk %s/%d/%d) Completed processing chunk", fac.Facility, m.ChunkIndex+1, m.ChunkCount)
 		for _, member := range m.Members {
+			if member.User.Bot {
+				continue
+			}
 			fac.ProcessMember(s, member)
 		}
 	}(s, m)
