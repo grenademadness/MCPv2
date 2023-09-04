@@ -20,13 +20,13 @@ import "github.com/adh-partnership/api/pkg/database"
 
 type Bot struct {
 	ID    int64
-	Key   string `gorm:"column:key""`
+	Key   string
 	Value string
 }
 
 func Get(key string) (string, error) {
 	var bot Bot
-	err := database.DB.Where("key = ?", key).First(&bot).Error
+	err := database.DB.Where(&Bot{Key: key}).First(&bot).Error
 	if err != nil {
 		return "", err
 	}
