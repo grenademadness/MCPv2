@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: bot
+      MYSQL_ROOT_PASSWORD: bot
+      MYSQL_USER: bot
+      MYSQL_PASSWORD: bot

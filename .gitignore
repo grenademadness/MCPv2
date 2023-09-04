@@ -1,0 +1,5 @@
+.vscode
+out
+config.yaml
+config*.yaml
+test-report.xmls
