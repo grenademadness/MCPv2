@@ -18,13 +18,19 @@ package app
 
 import (
 	"io/fs"
+	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/adh-partnership/api/pkg/database"
 	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/urfave/cli/v2"
 
+	"github.com/vpaza/bot/internal/bot"
+	"github.com/vpaza/bot/internal/commands"
+	"github.com/vpaza/bot/internal/facility"
 	"github.com/vpaza/bot/pkg/config"
 	"github.com/vpaza/bot/pkg/database/models"
 	"github.com/vpaza/bot/pkg/jobs"
@@ -61,7 +67,7 @@ func newStartCommand() *cli.Command {
 				return err
 			}
 			// Walk the facility configs path and load them
-			filepath.WalkDir(c.String("facility-configs-path"), func(path string, d fs.DirEntry, err error) error {
+			err = filepath.WalkDir(c.String("facility-configs-path"), func(path string, d fs.DirEntry, err error) error {
 				if err != nil {
 					return err
 				}
@@ -72,15 +78,18 @@ func newStartCommand() *cli.Command {
 
 				if strings.HasSuffix(path, "yaml") || strings.HasSuffix(path, "yml") {
 					log.Infof("Loading facility config %s", path)
-					_, err = config.ParseFacilityConfig(path)
+					_, err = facility.ParseFacilityConfig(path)
 					if err != nil {
 						return err
 					}
 				}
 				return nil
 			})
+			if err != nil {
+				return err
+			}
 
-			log.Debugf("FacCfg=%+v", config.FacCfg)
+			log.Debugf("FacCfg=%+v", facility.FacCfg)
 
 			log.Infof("Building database connection...")
 			err = database.Connect(database.DBOptions{
@@ -108,8 +117,30 @@ func newStartCommand() *cli.Command {
 			log.Infof("Building jobs...")
 			jobs.BuildJobs()
 
+			log.Infof("Starting bot...")
+			sess, err := bot.Start()
+			if err != nil {
+				return err
+			}
+
 			log.Infof("Starting jobs async...")
-			jobs.Start()
+			jobs.Start(sess)
+
+			log.Infof("Bot should be running...")
+
+			stop := make(chan os.Signal, 1)
+			signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+			<-stop
+
+			log.Infof("Gracefully shutting down...")
+			sess.Close()
+			for _, facility := range facility.FacCfg {
+				err := commands.Unregister(sess, facility.DiscordID)
+				if err != nil {
+					log.Warnf("Failed to unregister commands: %s", err)
+				}
+			}
+			log.Infof("Done")
 
 			return nil
 		},

@@ -14,24 +14,27 @@
  *  limitations under the License.
  */
 
-package events
+package guildmemberadd
 
 import (
+	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/vpaza/bot/internal/events/guildcreate"
-	"github.com/vpaza/bot/internal/events/guilddelete"
-	"github.com/vpaza/bot/internal/events/guildmemberadd"
-	"github.com/vpaza/bot/internal/events/guildmemberschunk"
-	"github.com/vpaza/bot/internal/events/interactioncreate"
-	"github.com/vpaza/bot/internal/events/ready"
+	"github.com/vpaza/bot/internal/facility"
 )
 
-func AddEvents(s *discordgo.Session) {
-	s.AddHandler(guildcreate.Handler)
-	s.AddHandler(guilddelete.Handler)
-	s.AddHandler(guildmemberadd.Handler)
-	s.AddHandler(guildmemberschunk.Handler)
-	s.AddHandler(interactioncreate.Handler)
-	s.AddHandler(ready.Handler)
+var log = logger.Logger.WithField("component", "events/guild_member_add")
+
+func Handler(s *discordgo.Session, m *discordgo.GuildMemberAdd) {
+	guild := m.GuildID
+	f, err := facility.FindFacility(&facility.Facility{
+		DiscordID: guild,
+	})
+	if err == facility.ErrorFacilityNotFound {
+		log.Errorf("No facility found for guild %s, what guild is this?", guild)
+		return
+	}
+
+	log.Infof("User %s joined %s guild, processing", m.Member.User.Username, f.Facility)
+	f.ProcessMember(s, m.Member)
 }

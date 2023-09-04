@@ -41,3 +41,7 @@ func EnvOrDefault(env string, def string) string {
 	}
 	return def
 }
+
+func PointerOf[T any](v T) *T {
+	return &v
+}

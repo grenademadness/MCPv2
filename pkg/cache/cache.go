@@ -14,35 +14,34 @@
  *  limitations under the License.
  */
 
-package network
+package cache
 
 import (
-	"net/url"
+	"context"
+	"time"
 
-	adhnetwork "github.com/adh-partnership/api/pkg/network"
+	"github.com/allegro/bigcache/v3"
 )
 
-func init() {
-	adhnetwork.UserAgent = "ADH/bot"
+var (
+	ErrEntryNotFound = bigcache.ErrEntryNotFound
+	cache            *bigcache.BigCache
+)
+
+func Setup() error {
+	var err error
+	cache, err = bigcache.New(context.Background(), bigcache.DefaultConfig(3*time.Minute))
+	if err != nil {
+		panic(err)
+	}
+
+	return nil
 }
 
-func Call(method, requrl string, contenttype string, formdata map[string]string, headers map[string]string) (int, []byte, error) {
-	u, err := url.Parse(requrl)
-	if err != nil {
-		return 0, nil, err
-	}
+func Get(key string) ([]byte, error) {
+	return cache.Get(key)
+}
 
-	data := url.Values{}
-
-	for k, v := range formdata {
-		data.Set(k, v)
-	}
-
-	return adhnetwork.HandleWithHeaders(
-		method,
-		u.String(),
-		contenttype,
-		data.Encode(),
-		headers,
-	)
+func Set(key string, value []byte) error {
+	return cache.Set(key, value)
 }

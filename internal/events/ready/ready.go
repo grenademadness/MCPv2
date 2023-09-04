@@ -14,24 +14,20 @@
  *  limitations under the License.
  */
 
-package events
+package ready
 
 import (
+	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
-
-	"github.com/vpaza/bot/internal/events/guildcreate"
-	"github.com/vpaza/bot/internal/events/guilddelete"
-	"github.com/vpaza/bot/internal/events/guildmemberadd"
-	"github.com/vpaza/bot/internal/events/guildmemberschunk"
-	"github.com/vpaza/bot/internal/events/interactioncreate"
-	"github.com/vpaza/bot/internal/events/ready"
 )
 
-func AddEvents(s *discordgo.Session) {
-	s.AddHandler(guildcreate.Handler)
-	s.AddHandler(guilddelete.Handler)
-	s.AddHandler(guildmemberadd.Handler)
-	s.AddHandler(guildmemberschunk.Handler)
-	s.AddHandler(interactioncreate.Handler)
-	s.AddHandler(ready.Handler)
+var log = logger.Logger.WithField("component", "events/ready")
+
+func Handler(s *discordgo.Session, r *discordgo.Ready) {
+	log.Infof("Logged in as: %v#%v", s.State.User.Username, s.State.User.Discriminator)
+
+	err := s.UpdateWatchStatus(0, "Falcon")
+	if err != nil {
+		log.Warnf("Error setting watch status: %s", err)
+	}
 }

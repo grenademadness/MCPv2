@@ -14,24 +14,25 @@
  *  limitations under the License.
  */
 
-package events
+package interactioncreate
 
 import (
+	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/vpaza/bot/internal/events/guildcreate"
-	"github.com/vpaza/bot/internal/events/guilddelete"
-	"github.com/vpaza/bot/internal/events/guildmemberadd"
-	"github.com/vpaza/bot/internal/events/guildmemberschunk"
-	"github.com/vpaza/bot/internal/events/interactioncreate"
-	"github.com/vpaza/bot/internal/events/ready"
+	"github.com/vpaza/bot/internal/commands"
 )
 
-func AddEvents(s *discordgo.Session) {
-	s.AddHandler(guildcreate.Handler)
-	s.AddHandler(guilddelete.Handler)
-	s.AddHandler(guildmemberadd.Handler)
-	s.AddHandler(guildmemberschunk.Handler)
-	s.AddHandler(interactioncreate.Handler)
-	s.AddHandler(ready.Handler)
+var log = logger.Logger.WithField("component", "events/ready")
+
+func Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	log.Debugf("Interaction received: %s %s", i.Type, i.ApplicationCommandData().Name)
+
+	h, ok := commands.FindHandler(i.ApplicationCommandData().Name)
+	if !ok {
+		log.Errorf("No handler found for command %s", i.ApplicationCommandData().Name)
+		return
+	}
+
+	h(s, i)
 }

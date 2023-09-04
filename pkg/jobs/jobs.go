@@ -19,18 +19,21 @@ package jobs
 import (
 	"time"
 
-	"github.com/adh-partnership/api/pkg/logger"
+	"github.com/bwmarrin/discordgo"
 	"github.com/go-co-op/gocron"
 )
 
 var s *gocron.Scheduler
 
-var log = logger.Logger.WithField("component", "jobs")
+// discord *discordgo.Session
+// log     = logger.Logger.WithField("component", "jobs")
 
 func BuildJobs() {
 	s = gocron.NewScheduler(time.UTC)
+	// @TODO Soon s.Every(5).Minutes().SingletonMode().Do(UpdateGuilds)
 }
 
-func Start() {
+func Start(sess *discordgo.Session) {
 	s.StartAsync()
+	// @TODO discord = sess
 }

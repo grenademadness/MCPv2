@@ -1,6 +1,0 @@
-package constants
-
-const (
-	DISCORD_MAX_NAME_LENGTH    = 32
-	DISCORD_MAX_MESSAGE_LENGTH = 1024
-)

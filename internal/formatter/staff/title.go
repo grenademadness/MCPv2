@@ -14,35 +14,25 @@
  *  limitations under the License.
  */
 
-package network
+package staff
 
 import (
-	"net/url"
+	"github.com/adh-partnership/api/pkg/database/dto"
 
-	adhnetwork "github.com/adh-partnership/api/pkg/network"
+	"github.com/vpaza/bot/internal/formatter/staff/all"
+	"github.com/vpaza/bot/internal/formatter/staff/highest"
+	"github.com/vpaza/bot/internal/formatter/staff/none"
 )
 
-func init() {
-	adhnetwork.UserAgent = "ADH/bot"
-}
-
-func Call(method, requrl string, contenttype string, formdata map[string]string, headers map[string]string) (int, []byte, error) {
-	u, err := url.Parse(requrl)
-	if err != nil {
-		return 0, nil, err
+func GetTitle(u *dto.UserResponse, staffformat, staffsep string) string {
+	switch staffformat {
+	case "all":
+		return all.TitleFromUser(u, staffsep)
+	case "none":
+		return none.TitleFromUser(u, staffsep)
+	case "highest":
+		return highest.TitleFromUser(u, staffsep)
+	default:
+		return highest.TitleFromUser(u, staffsep)
 	}
-
-	data := url.Values{}
-
-	for k, v := range formdata {
-		data.Set(k, v)
-	}
-
-	return adhnetwork.HandleWithHeaders(
-		method,
-		u.String(),
-		contenttype,
-		data.Encode(),
-		headers,
-	)
 }

@@ -14,35 +14,26 @@
  *  limitations under the License.
  */
 
-package network
+package jobs
 
-import (
-	"net/url"
-
-	adhnetwork "github.com/adh-partnership/api/pkg/network"
-)
-
-func init() {
-	adhnetwork.UserAgent = "ADH/bot"
+func UpdateGuilds() {
+	/*
+		 @TODO
+			log.Debugf("Starting UpdateGuilds job")
+			defer log.Debugf("Finished UpdateGuilds job")
+			for _, f := range facility.FacCfg {
+				updateGuild(f)
+			}
+	*/
 }
 
-func Call(method, requrl string, contenttype string, formdata map[string]string, headers map[string]string) (int, []byte, error) {
-	u, err := url.Parse(requrl)
+/* @TODO
+func updateGuild(f *facility.Facility) {
+	log.Debugf("Requesting Guild Members for %s", f.Facility)
+	err := discord.RequestGuildMembers(f.DiscordID, "", 0, "", false)
 	if err != nil {
-		return 0, nil, err
+		log.Errorf("Error requesting guild members for %s: %s", f.Facility, err)
+		return
 	}
-
-	data := url.Values{}
-
-	for k, v := range formdata {
-		data.Set(k, v)
-	}
-
-	return adhnetwork.HandleWithHeaders(
-		method,
-		u.String(),
-		contenttype,
-		data.Encode(),
-		headers,
-	)
 }
+*/

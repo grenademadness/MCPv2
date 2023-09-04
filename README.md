@@ -1,6 +1,6 @@
 # Master Control Program v2
 
-A rewrite of the old Master Control Program (https://github.com/adh-partnership/bot)
+A rewrite of the old [Master Control Program](https://github.com/adh-partnership/bot)
 to be more configurable (aka, not hardcoded), modular, and be able to be used in multiple
 guilds instead of running multiple bots, one for each guild.
 
@@ -36,24 +36,32 @@ discord:
 These are YAML files generally in `facilities/` and are used to define facility guilds.
 
 An example:
+
 ```yaml
 # Used for internal identification purposes
 facility: ZAN
+# The nickname the bot should set for itself in this guild
+bot_name: Go Bot
 description: Anchorage ARTCC
 # The Guild ID for the facility's discord
 discord_id: 123456789012345678
 # What name format do we set for users in the guild?
+# - first_cid (John 888888, John 888888 | ATM)
 # - first_last (John Doe, John Doe | ATM)
 #   *NOTE* If this is set and staff_format is all, or the name is long, that user's last name will be truncated to last initial
 #   to fit within Discord's 32 character limit
 # - first_last_initial (John D., John D. | ATM)
+# default: first_last
 name_format: first_last
 # At the end of the name we'll append the staff role(s)
 # - highest: The highest staff role from ATM, DATM, TA, EC, FE, WM, INS, MTR, AEC, AFE, AWM
 # - all: All staff roles from ATM, DATM, TA, EC, FE, WM, INS, MTR, AEC, AFE, AWM separated by the defined seperator
+# - none: No staff roles
+# default: highest
 staff_format: highest
-# Seperator to use between the staff role(s) when staff_format is all
-# staff_title_seperator: "/"
+# Separator to use between the staff role(s) when staff_format is all
+# Defaults to "/" when not defined
+staff_title_separator: "/"
 # Position table, used for the who's online embedded message
 # that will be posted to the positions_channel
 positions:
