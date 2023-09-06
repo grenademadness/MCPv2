@@ -19,20 +19,30 @@ package interactioncreate
 import (
 	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
-
-	"github.com/vpaza/bot/internal/commands"
+	"github.com/vpaza/bot/pkg/interactions"
 )
 
 var log = logger.Logger.WithField("component", "events/ready")
 
 func Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	log.Debugf("Interaction received: %s %s", i.Type, i.ApplicationCommandData().Name)
-
-	h, ok := commands.FindHandler(i.ApplicationCommandData().Name)
-	if !ok {
-		log.Errorf("No handler found for command %s", i.ApplicationCommandData().Name)
-		return
+	switch i.Type {
+	case discordgo.InteractionApplicationCommand:
+		log.Debugf("Interaction received: %s %s", i.Type, i.ApplicationCommandData().Name)
+		h, ok := interactions.FindCommand(i.ApplicationCommandData().Name)
+		if !ok {
+			log.Errorf("No handler found for command %s", i.ApplicationCommandData().Name)
+			return
+		}
+		h.Handler(s, i)
+	case discordgo.InteractionMessageComponent:
+		log.Debugf("Interaction received: %s %s", i.Type, i.MessageComponentData().CustomID)
+		h, ok := interactions.FindComponent(i.MessageComponentData().CustomID)
+		if !ok {
+			log.Errorf("No handler found for component %s", i.MessageComponentData().CustomID)
+			return
+		}
+		h.Handler(s, i)
+	default:
+		log.Debugf("Received unimplmeneted interaction create of type %s", i.Type)
 	}
-
-	h(s, i)
 }

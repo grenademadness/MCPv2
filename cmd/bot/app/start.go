@@ -33,7 +33,7 @@ import (
 	"github.com/vpaza/bot/internal/facility"
 	"github.com/vpaza/bot/pkg/cache"
 	"github.com/vpaza/bot/pkg/config"
-	"github.com/vpaza/bot/pkg/database/models"
+	botdatabase "github.com/vpaza/bot/pkg/database"
 	"github.com/vpaza/bot/pkg/jobs"
 )
 
@@ -109,7 +109,7 @@ func newStartCommand() *cli.Command {
 
 			log.Infof("Running migrations...")
 			err = database.DB.AutoMigrate(
-				&models.Bot{},
+				&botdatabase.Bot{},
 			)
 			if err != nil {
 				return err

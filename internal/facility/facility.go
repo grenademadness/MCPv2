@@ -18,6 +18,7 @@ package facility
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/adh-partnership/api/pkg/logger"
@@ -25,16 +26,26 @@ import (
 )
 
 type Facility struct {
-	Facility            string `json:"facility"`
-	BotName             string `json:"bot_name"`
-	DiscordID           string `json:"discord_id"`
-	Description         string `json:"description"`
-	NameFormat          string `json:"name_format"`
-	StaffFormat         string `json:"staff_format"`
-	StaffTitleSeparator string `json:"staff_title_separator"`
-	RosterAPI           string `json:"roster_api"`
-	API                 string `json:"api"`
-	Roles               []struct {
+	Facility                   string `json:"facility"`
+	BotName                    string `json:"bot_name"`
+	DiscordID                  string `json:"discord_id"`
+	Description                string `json:"description"`
+	NameFormat                 string `json:"name_format"`
+	StaffFormat                string `json:"staff_format"`
+	StaffTitleSeparator        string `json:"staff_title_separator"`
+	RosterAPI                  string `json:"roster_api"`
+	API                        string `json:"api"`
+	ShowOnline                 string `json:"show_online"`
+	OnlineChannel              string `json:"online_channel"`
+	NoControllersOnlineMessage string `json:"no_controllers_online_message"`
+	Positions                  []struct {
+		Name      string `json:"name"`
+		Callsigns struct {
+			Prefix []string `json:"prefix"`
+			Suffix []string `json:"suffix"`
+		} `json:"callsigns"`
+	} `json:"positions"`
+	Roles []struct {
 		ID   string `json:"id"`
 		Name string `json:"name"`
 		If   []struct {
@@ -90,4 +101,12 @@ func ParseFacilityConfig(file string) (*Facility, error) {
 	FacCfg[cfg.Facility] = cfg
 
 	return cfg, nil
+}
+
+func (f *Facility) GetNoControllersOnlineMessage() string {
+	if f.NoControllersOnlineMessage == "" {
+		return fmt.Sprintf("There are currently no %s controllers online.", f.Facility)
+	}
+
+	return f.NoControllersOnlineMessage
 }

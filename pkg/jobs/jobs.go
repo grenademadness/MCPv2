@@ -32,13 +32,22 @@ var (
 
 func BuildJobs() {
 	s = gocron.NewScheduler(time.UTC)
+
+	log.Infof("Registering UpdateGuilds Job")
 	_, err := s.Every(5).Minutes().SingletonMode().Do(UpdateGuilds)
 	if err != nil {
 		log.Errorf("Failed to schedule UpdateGuilds: %s", err)
 	}
+
+	log.Infof("Registering UpdateOnline Job")
+	_, err = s.Every(30).Seconds().SingletonMode().Do(UpdateOnline)
+	if err != nil {
+		log.Errorf("Failed to schedule UpdateOnline: %s", err)
+	}
 }
 
 func Start(sess *discordgo.Session) {
+	log.Infof("Starting jobs")
 	s.StartAsync()
 	discord = sess
 }

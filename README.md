@@ -105,6 +105,10 @@ positions:
 # The ID number of the channel to post the who's online message to
 # This channel should ideally be setup so only the bot posts to it
 positions_channel: 1011814580848177195
+# Message to use when no controllers are online
+# Defaults to "There are currently no (Facility ID) controllers online."
+no_controllers_online_message: |
+  There are currently no ZAN controllers online.
 # Role assignments
 # Users who have a configured role but do not meet the conditions will have the role
 # removed.

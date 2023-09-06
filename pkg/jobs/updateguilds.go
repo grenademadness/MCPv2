@@ -19,6 +19,11 @@ package jobs
 import "github.com/vpaza/bot/internal/facility"
 
 func UpdateGuilds() {
+	if discord == nil || !discord.DataReady {
+		log.Infof("Discord data not ready, skipping UpdateGuilds job")
+		return
+	}
+
 	log.Debugf("Starting UpdateGuilds job")
 	defer log.Debugf("Finished UpdateGuilds job")
 	for _, f := range facility.FacCfg {

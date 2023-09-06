@@ -20,42 +20,18 @@ import (
 	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/vpaza/bot/internal/commands/events"
 	"github.com/vpaza/bot/internal/commands/ping"
+	"github.com/vpaza/bot/pkg/interactions"
 )
-
-type AppCommand struct {
-	Name       string
-	ID         string
-	Handler    func(*discordgo.Session, *discordgo.InteractionCreate)
-	AppCommand *discordgo.ApplicationCommand
-}
 
 var (
-	commands map[string]*AppCommand
-	log      = logger.Logger.WithField("component", "commands")
+	log = logger.Logger.WithField("component", "commands")
 )
 
-func init() {
-	commands = make(map[string]*AppCommand)
-}
-
 func SetupCommands() {
-	AddCommand(ping.Register())
-}
-
-func AddCommand(name string, handler func(*discordgo.Session, *discordgo.InteractionCreate), appCommand *discordgo.ApplicationCommand) {
-	commands[name] = &AppCommand{
-		Name:       name,
-		Handler:    handler,
-		AppCommand: appCommand,
-	}
-}
-
-func FindHandler(cmd string) (func(*discordgo.Session, *discordgo.InteractionCreate), bool) {
-	if command, ok := commands[cmd]; ok {
-		return command.Handler, true
-	}
-	return nil, false
+	ping.Register()
+	events.Register()
 }
 
 func RegisterCommands(s *discordgo.Session, guildid string) error {
@@ -72,7 +48,7 @@ func RegisterCommands(s *discordgo.Session, guildid string) error {
 		}
 	}
 
-	for _, command := range commands {
+	for _, command := range interactions.GetCommands() {
 		log.Infof("Registering command %s", command.Name)
 		appCommand, err := s.ApplicationCommandCreate(s.State.User.ID, guildid, command.AppCommand)
 		if err != nil {
@@ -85,7 +61,7 @@ func RegisterCommands(s *discordgo.Session, guildid string) error {
 }
 
 func Unregister(s *discordgo.Session, guildid string) error {
-	for _, command := range commands {
+	for _, command := range interactions.GetCommands() {
 		if command.ID != "" {
 			log.Infof("Unregistering command %s", command.Name)
 			err := s.ApplicationCommandDelete(s.State.User.ID, guildid, command.ID)

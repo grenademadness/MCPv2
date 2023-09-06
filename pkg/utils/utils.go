@@ -17,6 +17,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"os"
 	"time"
 )
@@ -44,4 +45,19 @@ func EnvOrDefault(env string, def string) string {
 
 func PointerOf[T any](v T) *T {
 	return &v
+}
+
+func Trim(s string, length int) string {
+	if len(s) > length {
+		return s[:length] + "..."
+	}
+	return s
+}
+
+func MapJSON(m map[string]interface{}) string {
+	b, err := json.Marshal(m)
+	if err != nil {
+		return ""
+	}
+	return string(b)
 }

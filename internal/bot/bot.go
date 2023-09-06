@@ -59,3 +59,18 @@ func Start() (*discordgo.Session, error) {
 func GetSession() *discordgo.Session {
 	return session
 }
+
+func FindBotMessageIn(channelid string) (*discordgo.Message, error) {
+	messages, err := session.ChannelMessages(channelid, 100, "", "", "")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, m := range messages {
+		if m.Author.ID == session.State.User.ID {
+			return m, nil
+		}
+	}
+
+	return nil, nil
+}

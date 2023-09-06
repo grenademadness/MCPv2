@@ -33,3 +33,17 @@ func Get(key string) (string, error) {
 
 	return bot.Value, nil
 }
+
+func Set(key, value string) error {
+	bot := Bot{
+		Key:   key,
+		Value: value,
+	}
+
+	err := database.DB.Save(&bot).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

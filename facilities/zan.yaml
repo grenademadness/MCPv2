@@ -4,13 +4,15 @@ description: Anchorage ARTCC
 discord_id: "1148188958539403354"
 name_format: first_last
 api: https://api.zanartcc.org
+show_online: true
+online_channel: "1148188961387335818"
 positions:
   - name: Oceanic
     callsigns:
-      - prefix:
-          - ZAN
-        suffix:
-          - FSS
+      prefix:
+        - ZAN
+      suffix:
+        - FSS
   - name: Enroute
     callsigns:
       prefix:

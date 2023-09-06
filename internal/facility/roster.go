@@ -70,6 +70,21 @@ func (f *Facility) GetRoster() []*dto.UserResponse {
 	return roster
 }
 
+func (f *Facility) FindUserByCID(cid string) (*dto.UserResponse, error) {
+	roster := f.GetRoster()
+	if roster == nil {
+		return nil, fmt.Errorf("failed to get roster")
+	}
+
+	for _, user := range roster {
+		if fmt.Sprint(user.CID) == cid {
+			return user, nil
+		}
+	}
+
+	return nil, ErrUserNotFound
+}
+
 func (f *Facility) FindUserByDiscordID(id string) (*dto.UserResponse, error) {
 	roster := f.GetRoster()
 	if roster == nil {

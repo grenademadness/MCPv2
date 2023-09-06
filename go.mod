@@ -3,7 +3,7 @@ module github.com/vpaza/bot
 go 1.21
 
 require (
-	github.com/adh-partnership/api v0.0.0-20230819011117-8bbba03e005a
+	github.com/adh-partnership/api v0.0.0-20230906032315-70ae5906d952
 	github.com/bwmarrin/discordgo v0.27.2-0.20230903211940-8ca653343373
 	github.com/go-co-op/gocron v1.33.1
 	github.com/sirupsen/logrus v1.9.3 // indirect
@@ -12,10 +12,7 @@ require (
 	sigs.k8s.io/yaml v1.3.0
 )
 
-require (
-	github.com/allegro/bigcache/v3 v3.1.0
-	gopkg.in/yaml.v2 v2.4.0
-)
+require github.com/allegro/bigcache/v3 v3.1.0
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
@@ -33,8 +30,9 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
-	golang.org/x/crypto v0.12.0 // indirect
+	golang.org/x/crypto v0.13.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gorm.io/driver/mysql v1.5.1 // indirect
 	moul.io/http2curl v1.0.0 // indirect
 )

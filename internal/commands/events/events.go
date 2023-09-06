@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package ping
+package events
 
 import (
 	"github.com/adh-partnership/api/pkg/logger"
@@ -23,30 +23,24 @@ import (
 	"github.com/vpaza/bot/pkg/utils"
 )
 
-var log = logger.Logger.WithField("component", "commands/ping")
+var log = logger.Logger.WithField("component", "commands/events")
 
 func Register() {
 	interactions.AddCommand(&interactions.AppInteraction{
-		Name:    "ping",
+		Name:    "events",
 		Handler: Handler,
 		AppCommand: &discordgo.ApplicationCommand{
-			Name:         "ping",
-			Description:  "Ping the bot",
+			Name:         "events",
+			Description:  "Post information or positions of an event",
 			DMPermission: utils.PointerOf(false),
 		},
 	})
-}
-
-func Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	log.Infof("Received ping command from %s in %s #%s", i.Member.User.ID, i.GuildID, i.ChannelID)
-	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Flags:   discordgo.MessageFlagsEphemeral,
-			Content: "Pong!",
-		},
+	interactions.AddComponent(&interactions.AppInteraction{
+		Name:    "event-select",
+		Handler: EventSelectHandler,
 	})
-	if err != nil {
-		log.Errorf("Error responding to ping command: %s", err)
-	}
+	interactions.AddComponent(&interactions.AppInteraction{
+		Name:    "event-post-select",
+		Handler: EventPostSelectHandler,
+	})
 }
