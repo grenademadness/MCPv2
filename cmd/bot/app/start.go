@@ -24,7 +24,6 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/adh-partnership/api/pkg/database"
 	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/urfave/cli/v2"
 
@@ -33,7 +32,6 @@ import (
 	"github.com/vpaza/bot/internal/facility"
 	"github.com/vpaza/bot/pkg/cache"
 	"github.com/vpaza/bot/pkg/config"
-	botdatabase "github.com/vpaza/bot/pkg/database"
 	"github.com/vpaza/bot/pkg/jobs"
 )
 
@@ -91,29 +89,6 @@ func newStartCommand() *cli.Command {
 			}
 
 			log.Debugf("FacCfg=%+v", facility.FacCfg)
-
-			log.Infof("Building database connection...")
-			err = database.Connect(database.DBOptions{
-				Host:     config.Cfg.Database.Host,
-				Port:     config.Cfg.Database.Port,
-				User:     config.Cfg.Database.Username,
-				Password: config.Cfg.Database.Password,
-				Database: config.Cfg.Database.Database,
-				CACert:   config.Cfg.Database.CACert,
-				Driver:   "mysql",
-				Logger:   logger.Logger,
-			})
-			if err != nil {
-				return err
-			}
-
-			log.Infof("Running migrations...")
-			err = database.DB.AutoMigrate(
-				&botdatabase.Bot{},
-			)
-			if err != nil {
-				return err
-			}
 
 			log.Infof("Configuring cache")
 			err = cache.Setup()
