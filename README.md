@@ -231,7 +231,7 @@ Logs will always print for at and above the defined level.
 
 Not provided. A way to build it is the define a `ConfigMap` to mount for the config yaml, and a configmap to mount as your facilities directories.
 
-For more information, consult: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+For more information, consult [the Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 
 ## License
 
