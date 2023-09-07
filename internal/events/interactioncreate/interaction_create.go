@@ -19,6 +19,7 @@ package interactioncreate
 import (
 	"github.com/adh-partnership/api/pkg/logger"
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/vpaza/bot/pkg/interactions"
 )
 

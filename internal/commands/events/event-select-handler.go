@@ -1,3 +1,19 @@
+/*
+ * Copyright Daniel Hawton
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package events
 
 import (
@@ -19,13 +35,16 @@ func EventSelectHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	err := json.Unmarshal([]byte(i.MessageComponentData().Values[0]), &val)
 	if err != nil {
 		log.Errorf("Failed to parse event data: %s", err)
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseUpdateMessage,
 			Data: &discordgo.InteractionResponseData{
 				Flags:   discordgo.MessageFlagsEphemeral,
 				Content: "Error finding event",
 			},
 		})
+		if err != nil {
+			log.Warnf("Error responding to channel: %s", err)
+		}
 		return
 	}
 
@@ -49,7 +68,7 @@ func EventSelectHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
-	_ = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseUpdateMessage,
 		Data: &discordgo.InteractionResponseData{
 			Flags:   discordgo.MessageFlagsEphemeral,
@@ -78,4 +97,7 @@ func EventSelectHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			},
 		},
 	})
+	if err != nil {
+		log.Warnf("Error responding to channel: %s", err)
+	}
 }

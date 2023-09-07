@@ -1,3 +1,19 @@
+/*
+ * Copyright Daniel Hawton
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package jobs
 
 import (
@@ -39,7 +55,7 @@ func updateOnline(f *facility.Facility, data *vatsim.VATSIMData) {
 	uolog.Debugf("Starting UpdateOnline job for %s", f.Facility)
 	start := time.Now()
 
-	var online = make(map[string][]string)
+	online := make(map[string][]string)
 
 	for _, p := range f.Positions {
 		online[p.Name] = []string{}
@@ -93,9 +109,15 @@ func updateOnline(f *facility.Facility, data *vatsim.VATSIMData) {
 	}
 
 	if post == nil {
-		bot.GetSession().ChannelMessageSendEmbed(f.OnlineChannel, message)
+		_, err := bot.GetSession().ChannelMessageSendEmbed(f.OnlineChannel, message)
+		if err != nil {
+			log.Errorf("Error sending message: %s", err)
+		}
 	} else {
-		bot.GetSession().ChannelMessageEditEmbed(f.OnlineChannel, post.ID, message)
+		_, err := bot.GetSession().ChannelMessageEditEmbed(f.OnlineChannel, post.ID, message)
+		if err != nil {
+			log.Errorf("Error sending message: %s", err)
+		}
 	}
 
 	uolog.Debugf("Finished UpdateOnline job for %s (took: %s)", f.Facility, time.Since(start))

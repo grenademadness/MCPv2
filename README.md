@@ -204,7 +204,34 @@ api: https://api.zanartcc.org
 
 ## Running
 
-TODO
+To start the bot, it assumes that in your PWD you have a `config.yaml` file and there will be a `facilities` directory with yaml files. If this is not the case
+you can override with arguments.
+
+```shell
+./bot start --config /path/to/config.yaml --facility-configs-path /path/to/facilities-directory
+```
+
+By default log level is set to `info`, if you need lower, you can add `--log-level <level>` prior to the subcommand.
+
+Level is one of:
+
+- error
+- warn
+- info (default)
+- debug
+- trace
+
+Logs will always print for at and above the defined level.
+
+```shell
+./bot --log-level debug start --config /path/to/config.yaml --facility-configs-path /path/to/facilities-directory
+```
+
+## Kubernetes Manifests
+
+Not provided. A way to build it is the define a `ConfigMap` to mount for the config yaml, and a configmap to mount as your facilities directories.
+
+For more information, consult: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 
 ## License
 

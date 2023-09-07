@@ -25,9 +25,7 @@ import (
 	"github.com/vpaza/bot/pkg/interactions"
 )
 
-var (
-	log = logger.Logger.WithField("component", "commands")
-)
+var log = logger.Logger.WithField("component", "commands")
 
 func SetupCommands() {
 	ping.Register()

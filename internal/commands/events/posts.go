@@ -1,3 +1,19 @@
+/*
+ * Copyright Daniel Hawton
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package events
 
 import (
@@ -39,7 +55,10 @@ func postAnnouncement(s *discordgo.Session, i *discordgo.InteractionCreate, even
 			Text: "END OF LINE.",
 		},
 	}
-	s.ChannelMessageSendEmbed(i.ChannelID, message)
+	_, err := s.ChannelMessageSendEmbed(i.ChannelID, message)
+	if err != nil {
+		log.Errorf("Error sending message: %s", err)
+	}
 }
 
 func postPositions(s *discordgo.Session, i *discordgo.InteractionCreate, event *dto.EventsResponse) {
@@ -84,7 +103,10 @@ func postPositions(s *discordgo.Session, i *discordgo.InteractionCreate, event *
 			Inline: true,
 		})
 	}
-	s.ChannelMessageSendEmbed(i.ChannelID, message)
+	_, err := s.ChannelMessageSendEmbed(i.ChannelID, message)
+	if err != nil {
+		log.Errorf("Error sending message: %s", err)
+	}
 }
 
 func postPositionsSplit(s *discordgo.Session, i *discordgo.InteractionCreate, event *dto.EventsResponse) {
@@ -118,7 +140,10 @@ func postPositionsSplit(s *discordgo.Session, i *discordgo.InteractionCreate, ev
 			Inline: true,
 		})
 	}
-	s.ChannelMessageSendEmbed(i.ChannelID, message)
+	_, err := s.ChannelMessageSendEmbed(i.ChannelID, message)
+	if err != nil {
+		log.Errorf("Error sending message: %s", err)
+	}
 
 	// Part 2 -- Terminal Radar Positions
 	message = &discordgo.MessageEmbed{
@@ -132,7 +157,10 @@ func postPositionsSplit(s *discordgo.Session, i *discordgo.InteractionCreate, ev
 			Inline: true,
 		})
 	}
-	s.ChannelMessageSendEmbed(i.ChannelID, message)
+	_, err = s.ChannelMessageSendEmbed(i.ChannelID, message)
+	if err != nil {
+		log.Errorf("Error sending message: %s", err)
+	}
 
 	// Part 3 -- Cab Positions
 	message = &discordgo.MessageEmbed{
@@ -152,7 +180,10 @@ func postPositionsSplit(s *discordgo.Session, i *discordgo.InteractionCreate, ev
 			Inline: true,
 		})
 	}
-	s.ChannelMessageSendEmbed(i.ChannelID, message)
+	_, err = s.ChannelMessageSendEmbed(i.ChannelID, message)
+	if err != nil {
+		log.Errorf("Error sending message: %s", err)
+	}
 }
 
 func getControllerFromUser(user *dto.UserResponse) string {
