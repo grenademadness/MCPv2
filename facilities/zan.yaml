@@ -1,11 +1,11 @@
 facility: ZAN
 bot_name: ZAN Is The Best
 description: Anchorage ARTCC
-discord_id: "1148188958539403354"
+discord_id: "1013148343712632912"
 name_format: first_last
 api: https://api.zanartcc.org
 show_online: true
-online_channel: "1148188961387335818"
+online_channel: "1148858886087004230"
 positions:
   - name: Oceanic
     callsigns:
@@ -53,77 +53,77 @@ positions:
         - GND
         - DEL
 roles:
-  - id: 1148188958568759335
-    name: ZAN Senior Staff
-    if:
-      - condition: has_role
-        value: ATM
-      - condition: has_role
-        value: DATM
-      - condition: has_role
-        value: TA
-  - id: 1148188958568759334
-    name: ZAN Staff
-    if:
-      - condition: has_role
-        value: EC
-      - condition: has_role
-        value: FE
-      - condition: has_role
-        value: WM
-  - id: 1148188958568759333
-    name: ZAN Assistance Staff
-    if:
-      - condition: has_role
-        value: facilities
-      - condition: has_role
-        value: events
-      - condition: has_role
-        value: web
-  - id: 1148188958568759332
-    name: Training Team
-    if:
-      - condition: has_role
-        value: INS
-      - condition: has_role
-        value: MTR
-  - id: 1148188958539403361
-    name: FE Team
-    if:
-      - condition: has_role
-        value: facilities
-  - id: 1148188958539403360
-    name: Events Team
-    if:
-      - condition: has_role
-        value: events
-  - id: 1148188958568759330
-    name: Instructors
-    if:
-      - condition: has_role
-        value: INS
-  - id: 1148188958568759329
-    name: Mentors
-    if:
-      - condition: has_role
-        value: MTR
-  - id: 1148188958568759326
-    name: ZAN Members
-    if:
-      - condition: controller_type
-        value: home
-  - id: 1148188958539403363
-    name: Visitors
-    if:
-      - condition: controller_type
-        value: visit
-  - id: 1148188958539403357
-    name: Pilot
-    if:
-      - condition: controller_type
-        value: none
-  - id: 1148188958539403355
-    name: Unverified
-    if:
-      - condition: unknown
-        value: true
+- id: 1013148343771340813
+  name: ZAN Senior Staff
+  if:
+  - condition: has_role
+    value: ATM
+  - condition: has_role
+    value: DATM
+  - condition: has_role
+    value: TA
+- id: 1013148343771340812
+  name: ZAN Staff
+  if:
+  - condition: has_role
+    value: EC
+  - condition: has_role
+    value: FE
+  - condition: has_role
+    value: WM
+- id: 1013148343771340811
+  name: ZAN Assistance Staff
+  if:
+  - condition: has_role
+    value: facilities
+  - condition: has_role
+    value: events
+  - condition: has_role
+    value: web
+- id: 1113130280757235834
+  name: Training Team
+  if:
+  - condition: has_role
+    value: INS
+  - condition: has_role
+    value: MTR
+- id: 1135762890608091149
+  name: FE Team
+  if:
+  - condition: has_role
+    value: facilities
+- id: 1013148343729393785
+  name: Events Team
+  if:
+  - condition: has_role
+    value: events
+- id: 1013148343750361115
+  name: Instructors
+  if:
+  - condition: has_role
+    value: INS
+- id: 1013148343750361114
+  name: Mentors
+  if:
+  - condition: has_role
+    value: MTR
+- id: 1013148343750361109
+  name: ZAN Members
+  if:
+  - condition: controller_type
+    value: home
+- id: 1013148343750361108
+  name: Visitors
+  if:
+  - condition: controller_type
+    value: visit
+- id: 1013148343729393783
+  name: Pilot
+  if:
+  - condition: controller_type
+    value: none
+- id: 1121131087146524903
+  name: Unverified
+  if:
+  - condition: unknown
+    value: true
