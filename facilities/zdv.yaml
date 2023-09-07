@@ -94,11 +94,15 @@ roles:
     if:
       - condition: has_role
         value: facilities
+      - condition: has_role
+        value: FE
   - id: 759899335311228969
     name: Events Team
     if:
       - condition: has_role
         value: events
+      - condition: has_role
+        value: EC
   - id: 479850679855480843
     name: Members
     if:
