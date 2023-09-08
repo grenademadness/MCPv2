@@ -34,7 +34,7 @@ func BuildJobs() {
 	s = gocron.NewScheduler(time.UTC)
 
 	log.Infof("Registering UpdateGuilds Job")
-	_, err := s.Every(5).Minutes().SingletonMode().Do(UpdateGuilds)
+	_, err := s.Every(1).Minutes().SingletonMode().Do(UpdateGuilds)
 	if err != nil {
 		log.Errorf("Failed to schedule UpdateGuilds: %s", err)
 	}

@@ -51,6 +51,7 @@ discord_id: 123456789012345678
 #   *NOTE* If this is set and staff_format is all, or the name is long, that user's last name will be truncated to last initial
 #   to fit within Discord's 32 character limit
 # - first_last_initial (John D., John D. | ATM)
+# - first_last_initial_oi (John D. - JD, John D. - JD | ATM)
 # default: first_last
 name_format: first_last
 # At the end of the name we'll append the staff role(s)

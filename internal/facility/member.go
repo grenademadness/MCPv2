@@ -26,6 +26,7 @@ import (
 	"github.com/vpaza/bot/internal/formatter/names/firstcid"
 	"github.com/vpaza/bot/internal/formatter/names/firstlast"
 	"github.com/vpaza/bot/internal/formatter/names/firstlastinitial"
+	"github.com/vpaza/bot/internal/formatter/names/firstlastinitialoi"
 	"github.com/vpaza/bot/pkg/utils"
 )
 
@@ -35,6 +36,8 @@ func (f *Facility) GenerateNameFromUser(u *dto.UserResponse) string {
 		return firstcid.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
 	case "first_last_initial":
 		return firstlastinitial.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
+	case "first_last_initial_oi":
+		return firstlastinitialoi.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
 	case "first_last":
 		return firstlast.GenerateNameFromUser(u, f.StaffFormat, f.StaffTitleSeparator)
 	default:
@@ -56,6 +59,7 @@ func (f *Facility) ProcessMember(s *discordgo.Session, m *discordgo.Member) {
 		name := f.GenerateNameFromUser(user)
 		log.Debugf("Nick=%s, Name=%s", m.Nick, name)
 		if m.Nick == "" || name != m.Nick {
+			log.Infof("Setting nickname for %s to %s on %s", m.User.Username, name, f.Facility)
 			err := s.GuildMemberNickname(m.GuildID, m.User.ID, name)
 			if err != nil {
 				log.Errorf("Failed to set nickname for %s: %s", m.User.Username, err)
@@ -88,18 +92,18 @@ func (f *Facility) ProcessMemberRoles(s *discordgo.Session, m *discordgo.Member)
 
 		if shouldHave {
 			if !slices.Contains(m.Roles, role.ID) {
-				log.Infof("Adding role %s to %s", roleDisplay, m.User.Username)
+				log.Infof("Adding role %s to %s/%s", roleDisplay, f.Facility, m.User.Username)
 				err := s.GuildMemberRoleAdd(m.GuildID, m.User.ID, role.ID)
 				if err != nil {
-					log.Errorf("Failed to add role %s to %s: %s", roleDisplay, m.User.Username, err)
+					log.Errorf("Failed to add role %s to %s/%s: %s", roleDisplay, f.Facility, m.User.Username, err)
 				}
 			}
 		} else {
 			if slices.Contains(m.Roles, role.ID) {
-				log.Infof("Removing role %s from %s", roleDisplay, m.User.Username)
+				log.Infof("Removing role %s from %s/%s", roleDisplay, f.Facility, m.User.Username)
 				err := s.GuildMemberRoleRemove(m.GuildID, m.User.ID, role.ID)
 				if err != nil {
-					log.Errorf("Failed to remove role %s from %s: %s", roleDisplay, m.User.Username, err)
+					log.Errorf("Failed to remove role %s from %s/%s: %s", roleDisplay, f.Facility, m.User.Username, err)
 				}
 			}
 		}
