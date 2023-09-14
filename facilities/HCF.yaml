@@ -1,4 +1,4 @@
-facility: ZHN
+facility: HCF
 bot_name: HCF Sync Bot
 description: Honolulu Control Facility
 discord_id: 769347549651664906
@@ -127,4 +127,4 @@ roles:
   - condition: unknown
     value: true
 
-api: https://api.zanartcc.org
+api: https://api.vhcf.net
