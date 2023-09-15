@@ -105,7 +105,7 @@ positions:
     - DEL
 # The ID number of the channel to post the who's online message to
 # This channel should ideally be setup so only the bot posts to it
-positions_channel: 1011814580848177195
+online_channel: 1011814580848177195
 # Message to use when no controllers are online
 # Defaults to "There are currently no (Facility ID) controllers online."
 no_controllers_online_message: |
@@ -117,6 +117,7 @@ no_controllers_online_message: |
 # Conditions:
 # - has_role: Checks if the user has the specified role in the roster
 # - controller_type: Check if the user is a `home` controller, `visitor` controller, or `none`
+# - rating: Checks user rating (S1, S2, etc)
 # - unknown: Checks if the account is linked on the roster
 roles:
 - id: 123456789012345678 # Role ID
@@ -182,7 +183,7 @@ roles:
   name: Visitors
   if:
   - condition: controller_type
-    value: visit
+    value: visitor
 - id: 123456789012345678
   name: Pilot
   if:
