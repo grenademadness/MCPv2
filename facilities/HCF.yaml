@@ -129,4 +129,39 @@ roles:
   if:
   - condition: unknown
     value: true
+- id: 769347549651664913
+  name: S1
+  if:
+  - condition: rating
+    value: S1
+- id: 769347549651664914
+  name: S2
+  if:
+    - condition: rating
+      value: S2
+- id: 769347549651664915
+  name: S3
+  if:
+    - condition: rating
+      value: S3
+- id: 769347549659922462
+  name: C1
+  if:
+    - condition: rating
+      value: C1
+- id: 769347549659922463
+  name: C3
+  if:
+    - condition: rating
+      value: C3
+- id: 769347549659922464
+  name: I1
+  if:
+    - condition: rating
+      value: I1
+- id: 769347549659922465
+  name: I3
+  if:
+    - condition: rating
+      value: I3
 api: https://api.vhcf.net
