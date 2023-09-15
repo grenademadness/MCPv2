@@ -1,0 +1,130 @@
+facility: HCF
+bot_name: HCF Sync Bot
+description: Honolulu Control Facility
+discord_id: 769347549651664906
+name_format: first_last
+staff_format: highest
+staff_title_separator: "/"
+positions:
+- name: Oceanic
+  callsigns:
+  - prefix: ["ZAK"]
+    suffix: ["FSS"]
+- name: Enroute
+  callsigns:
+    prefix: ["HNL"]
+    suffix: ["CTR"]
+- name: Honolulu Approach
+  callsigns:
+    prefix: ["HNL"]
+    suffix: ["APP"]
+- name: Maui Approach
+  callsigns:
+    prefix: ["OGG"]
+    suffix: ["APP"]
+- name: Hilo Approach
+  callsigns:
+    prefix: ["HNL"]
+    suffix: ["APP"]
+- name: CAB
+  callsigns:
+    prefix:
+    - BKH
+    - LIH
+    - HHI
+    - HNL
+    - ITO
+    - JRF
+    - KOA
+    - MKK
+    - NGF
+    - OGG
+    - GUM
+    - UAM
+    - SPN
+    - BSF
+    suffix:
+    - TWR
+    - GND
+    - DEL
+positions_channel: 1151919393647898686
+no_controllers_online_message: |
+  No HCF Controllers are currently online.
+
+roles:
+- id: 769347549667917901 # Role ID
+  name: HCF Senior Staff # Role Name (primarily for logging)
+  if: # Conditions evaluated as a logical OR
+  - condition: has_role
+    value: ATM
+  - condition: has_role
+    value: DATM
+  - condition: has_role
+    value: TA
+- id: 769347549667917900
+  name: HCF Staff
+  if:
+  - condition: has_role
+    value: EC
+  - condition: has_role
+    value: FE
+  - condition: has_role
+    value: WM
+- id: 887160589674225716
+  name: HCF Assistant Staff
+  if:
+  - condition: has_role
+    value: facilities
+  - condition: has_role
+    value: events
+  - condition: has_role
+    value: web
+- id: 1151981135996407900
+  name: Training Staff
+  if:
+  - condition: has_role
+    value: INS
+  - condition: has_role
+    value: MTR
+- id: 1151981811895898175
+  name: Facilities Team
+  if:
+  - condition: has_role
+    value: facilities
+- id: 769347549659922467
+  name: Events Team
+  if:
+  - condition: has_role
+    value: events
+- id: 769347549667917896
+  name: Instructors
+  if:
+  - condition: has_role
+    value: INS
+- id: 769347549667917895
+  name: Mentors
+  if:
+  - condition: has_role
+    value: MTR
+- id: 769347549659922469
+  name: HCF Members
+  if:
+  - condition: controller_type
+    value: home
+- id: 769347549659922468
+  name: Visitors
+  if:
+  - condition: controller_type
+    value: visit
+- id: 856333793157185556
+  name: Pilot
+  if:
+  - condition: controller_type
+    value: none
+- id: 1151982656070893700
+  name: Unverified Users
+  if:
+  - condition: unknown
+    value: true
+
+api: https://api.vhcf.net
