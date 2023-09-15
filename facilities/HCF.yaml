@@ -6,9 +6,9 @@ name_format: first_last
 staff_format: highest
 staff_title_separator: "/"
 positions:
-- name: Oceanic
+- name: ZAK Oceanic
   callsigns:
-  - prefix: ["ZAK"]
+    prefix: ["ZAK"]
     suffix: ["FSS"]
 - name: Enroute
   callsigns:
@@ -47,10 +47,9 @@ positions:
     - TWR
     - GND
     - DEL
-positions_channel: 1151919393647898686
+online_channel: "1151919393647898686"
 no_controllers_online_message: |
-  No HCF Controllers are currently online.
-
+  No Controllers are currently online.
 roles:
 - id: 769347549667917901 # Role ID
   name: HCF Senior Staff # Role Name (primarily for logging)
@@ -91,11 +90,15 @@ roles:
   if:
   - condition: has_role
     value: facilities
+  - condition: has_role
+    value: FE
 - id: 769347549659922467
   name: Events Team
   if:
   - condition: has_role
     value: events
+  - condition: has_role
+    value: EC
 - id: 769347549667917896
   name: Instructors
   if:
@@ -115,7 +118,7 @@ roles:
   name: Visitors
   if:
   - condition: controller_type
-    value: visit
+    value: visitor
 - id: 856333793157185556
   name: Pilot
   if:
@@ -126,5 +129,4 @@ roles:
   if:
   - condition: unknown
     value: true
-
 api: https://api.vhcf.net
